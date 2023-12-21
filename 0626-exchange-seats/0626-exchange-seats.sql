@@ -1,7 +1,9 @@
 select
-	id,
 	case
-		when id%2 = 1 then lead(student, 1, student) over(order by id)
-		when id%2 = 0 then lag(student, 1) over(order by id)
-	end student
+		when id%2 = 1 and (select max(id) from seat) = id then id
+		when id%2 = 1 then id+1
+		when id%2 = 0 then id-1
+	end as id,
+	student
 from seat
+order by id
